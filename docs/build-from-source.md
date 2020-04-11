@@ -26,7 +26,6 @@ git clone https://github.com/node-webrtc/node-webrtc.git
 cd node-webrtc
 SKIP_DOWNLOAD=true npm install
 ```
-
 ## Subsequent Builds
 
 Subsequent builds can be triggered with `ncmake`:
@@ -42,6 +41,18 @@ of node-webrtc (and the underlying WebRTC library). Refer to
 command-line options to `ncmake`.
 
 ## Other Notes
+### Windows
+
+On Windows, we do not compile WebRTC sources with Clang. This is disabled by
+passing `is_clang=false` to `gn gen`.
+
+When you run into issues on Windows conserning file paths that are too long you can do the following which might help:
+1. Increase git character limit with `git config --system core.longpaths true` 
+2. Move the project to the root of your HDD (so in a directory like `C:/Development/node-webrtc`
+3. Modify settings in Windows according to this [article](https://www.howtogeek.com/266621/how-to-make-windows-10-accept-file-paths-over-260-characters/)
+4. Use the CMD console instead of bash
+
+Another issue on Windows (perhaps also on other platforms) is that your `node-webrtc` directory is in a folder with a space in its name. This will cause issues during the build process.
 
 ### Linux
 
@@ -82,11 +93,6 @@ SKIP_DOWNLOAD=true TARGET_ARCH=arm64 ARM_TOOLS_PATH=$(pwd)/gcc-linaro-7.3.1-2018
 On macOS, we statically link libc++ and libc++abi. Also, we compile WebRTC
 sources with the version of Clang downloaded as part of WebRTC's build process,
 but we compile node-webrtc sources using the system Clang.
-
-### Windows
-
-On Windows, we do not compile WebRTC sources with Clang. This is disabled by
-passing `is_clang=false` to `gn gen`.
 
 # Test
 
